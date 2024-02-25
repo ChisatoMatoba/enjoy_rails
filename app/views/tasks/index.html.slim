@@ -1,4 +1,16 @@
 h1 タスク一覧
-ul
+
+table
+  thead
+    tr
+      th
+        | タスク名
+      th
+        | タスクの説明
+  tbody
   - @tasks.each do |task|
-    li = "#{task.task} - #{task.task_description}"
+    tr
+      td
+        = link_to task.task, task_path(task)
+      td
+        = task.task_description
