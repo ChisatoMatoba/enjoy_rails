@@ -4,7 +4,7 @@ class TasksController < ApplicationController
   end
 
   def show
-    @task = Task.find_by(params[:id])
+    @task = Task.find(params[:id])
   end
 
   def new
@@ -22,18 +22,24 @@ class TasksController < ApplicationController
   end
 
   def edit
-    @task = Task.find_by(params[:id])
+    @task = Task.find(params[:id])
   end
 
   def update
-    @task = Task.find_by(params[:id])
+    @task = Task.find(params[:id])
 
     if @task.update(task_params)
-      redirect_to root_path, notice: '編集が成功しました。'
+      redirect_to root_path
     else
       Rails.logger.debug @facility.errors.full_messages
       render :edit, status: :unprocessable_entity
     end
+  end
+
+  def destroy
+    @task = Task.find(params[:id])
+    @task.destroy
+    redirect_to root_path, notice: 'タスクを削除しました。'
   end
 
   private
