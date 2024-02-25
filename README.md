@@ -1,24 +1,12 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## プロトタイプ
+![プロトタイプ](_doc/prototype.png)
 
-Things you may want to cover:
+## ER図
+![ER図](_doc/ER.png)
 
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+## 開発環境
+- Ruby : 3.2.2
+- Ruby on Rails : 7.1.3
+- Mysql : 8.1.0
