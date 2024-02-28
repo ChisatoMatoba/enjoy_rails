@@ -6,6 +6,7 @@ RSpec.describe 'タスク管理機能', type: :system do
   end
 
   it 'ユーザーが新しいタスクを作成する' do
+    slackテストのためにわざとsyntax error
     visit new_task_path
     fill_in 'タスク名', with: '新しいタスク'
     fill_in 'タスクの説明', with: '新しいタスクの説明'

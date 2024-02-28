@@ -46,9 +46,11 @@ jobs:
       - name: Notify Slack when job failed
         if: ${{ failure() }}
         uses: slackapi/slack-github-action@v1.18.0
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         with:
           payload: |
             {
-              "url": "${{github.server_url}}/${{github.repository}}/actions/runs/${{github.run_id}}"
+              "text": "GitHub Actionsの実行結果: 失敗しました。詳細はこちら: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
             }
     timeout-minutes: 10
