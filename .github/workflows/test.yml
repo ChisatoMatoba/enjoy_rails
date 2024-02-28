@@ -1,0 +1,56 @@
+name: RSpec Tests and Notify to Slack
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      db:
+        image: mysql:8.1
+        env:
+          MYSQL_ROOT_PASSWORD: password
+          MYSQL_ROOT_HOST: '%'
+        ports:
+          - 3306:3306
+        options: --health-cmd "mysqladmin ping -h 127.0.0.1" --health-interval 20s --health-timeout 10s --health-retries 10
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.2.2
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install libmysqlclient-dev
+          gem install bundler
+          bundle install
+
+      - name: Set up Database
+        run: |
+          cp config/database.yml.ci config/database.yml
+          bundle exec rails db:create RAILS_ENV=test
+          bundle exec rails db:migrate RAILS_ENV=test
+
+      - name: Run test
+        run: bundle exec rspec
+
+      - name: Notify Slack when job failed
+        if: ${{ failure() }}
+        uses: slackapi/slack-github-action@v1.18.0
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        with:
+          payload: |
+            {
+              "text": "GitHub Actionsの実行結果: 失敗しました。詳細はこちら: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+            }
+    timeout-minutes: 10
