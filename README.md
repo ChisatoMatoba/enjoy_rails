@@ -1,3 +1,6 @@
+※ステップ10までやって、[luxiarリポジトリ](https://github.com/luxiar/luxiar__enjoy_rails) に統合させました。
+
+
 # README
 
 ## プロトタイプ
